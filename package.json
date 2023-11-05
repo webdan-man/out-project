@@ -11,7 +11,6 @@
   "dependencies": {
     "@ant-design/compatible": "^5.1.2",
     "@ant-design/cssinjs": "^1.17.2",
-    "@next-auth/firebase-adapter": "^0.0.2-canary.207",
     "antd": "^5.11.0",
     "firebase": "^10.5.2",
     "framer-motion": "^10.16.4",
@@ -21,7 +20,6 @@
     "react": "^18",
     "react-dom": "^18",
     "react-icons": "^4.11.0",
-    "react-use": "^17.4.0",
     "swr": "^2.2.4"
   },
   "devDependencies": {
