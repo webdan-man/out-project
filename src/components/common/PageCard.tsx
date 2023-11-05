@@ -10,7 +10,7 @@ import moment from 'moment';
 import {useSession} from "next-auth/react";
 import Link from "next/link";
 import {CommentType, ProjectType} from "@/types/ProjectTypes";
-import {apiRoutes} from "@/app/api/auth/[...nextauth]/route";
+import {apiRoutes} from "@/constants/constants";
 
 const { TextArea } = Input;
 

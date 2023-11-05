@@ -12,7 +12,7 @@ import {usePathname} from "next/navigation";
 import {useSession} from "next-auth/react";
 import Image from "next/image";
 import {useWindowSize} from 'react-use';
-import {apiRoutes} from "@/app/api/auth/[...nextauth]/route";
+import {apiRoutes} from "@/constants/constants";
 
 const { Sider: AntdSider } = Layout;
 

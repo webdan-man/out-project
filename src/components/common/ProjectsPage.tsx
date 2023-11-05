@@ -5,7 +5,7 @@ import PageCard from "@/components/common/PageCard";
 import useSWR from "swr";
 import {getAllProjects} from "@/services/getProjects";
 import {ProjectType} from "@/types/ProjectTypes";
-import {apiRoutes} from "@/app/api/auth/[...nextauth]/route";
+import {apiRoutes} from "@/constants/constants";
 
 export default function ProjectsPage() {
     const {data: projects, isLoading } = useSWR("projects", getAllProjects);
