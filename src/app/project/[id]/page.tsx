@@ -11,7 +11,7 @@ export async function generateMetadata({params: {id}}: ProjectEditPageProps): Pr
     const data = docSnap.data();
 
     return {
-        title: data?.title
+        title: `${data?.title} | OUT Project`
     }
 }
 
