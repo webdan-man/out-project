@@ -2,15 +2,15 @@
 
 import { Form, Input, Collapse, List, Avatar, Button, Dropdown, Modal, Progress, Checkbox, Typography } from "antd";
 import { Comment } from '@ant-design/compatible';
-import { SettingOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import {useMemo, useState} from "react";
 import useSWR from "swr";
 import {deleteProject, getAllProjects, updateProject} from "@/services/getProjects";
 import moment from 'moment';
 import {useSession} from "next-auth/react";
-import type { MenuProps } from 'antd';
 import Link from "next/link";
-import {CommentType, ProjectType} from "@/components/common/ProjectsPage";
+import {CommentType, ProjectType} from "@/types/ProjectTypes";
+import {apiRoutes} from "@/app/api/auth/[...nextauth]/route";
 
 const { TextArea } = Input;
 
@@ -123,35 +123,6 @@ export default function PageCard({project}: { project: ProjectType }) {
         return project?.comments?.map((comment: CommentType) => ({...comment, content: <Text ellipsis={true}>{comment.content}</Text>, datetime: moment(comment.datetime).fromNow()})) || [];
     }, [project?.comments]) as CurrentComment[];
 
-
-    const items: MenuProps['items'] = [
-        {
-            label: <Link key="edit" href={`/project/${project.id}`}>
-                <EditOutlined  />
-            </Link>,
-            key: '0',
-        },
-        {
-            label: <>
-                <DeleteOutlined onClick={showModal} style={{color: 'red'}} key="delete" />
-                <Modal
-                    title="Warning"
-                    open={openModalDelete}
-                    onOk={() => {
-                        onDelete(project.id);
-                        hideModal();
-                    }}
-                    onCancel={hideModal}
-                    okText="Yes"
-                    cancelText="Cancel">
-                    Do you Want to delete this Project?
-                </Modal>
-            </>,
-            key: '1',
-            danger: true
-        },
-    ];
-
     const [form] = Form.useForm();
 
     const percent = useMemo(() => {
@@ -184,8 +155,9 @@ export default function PageCard({project}: { project: ProjectType }) {
                             layout="vertical"
                             autoComplete="off"
                             onValuesChange={onValuesChange}
+                            initialValues={project?.tasks}
                         >
-                            <Form.Item name="tasks" label="Tasks:">
+                            <Form.Item name="tasks" label="Tasks:" initialValue={project?.tasks?.filter(task => task.done).map(task => task.title)}>
                                 <Checkbox.Group className="flex flex-col">
                                     {
                                         project?.tasks?.map((task) => (
@@ -216,13 +188,26 @@ export default function PageCard({project}: { project: ProjectType }) {
             </>
         ),
         extra: (
-            <div className="flex gap-5">
+            <div className="flex gap-5 items-center">
                 {(!!percent || project?.tasks) && <div className="w-[200px] max-sm:hidden">
                     <Progress status="active" percent={percent}/>
                 </div>}
-                <Dropdown menu={{ items }} trigger={['click']}>
-                    <SettingOutlined />
-                </Dropdown>
+                <Link key="edit" href={`${apiRoutes.PROJECT}/${project.id}`}>
+                    <EditOutlined  />
+                </Link>
+                <DeleteOutlined onClick={showModal} style={{color: 'red'}} key="delete" />
+                <Modal
+                    title="Warning"
+                    open={openModalDelete}
+                    onOk={() => {
+                        onDelete(project.id);
+                        hideModal();
+                    }}
+                    onCancel={hideModal}
+                    okText="Yes"
+                    cancelText="Cancel">
+                    Do you Want to delete this Project?
+                </Modal>
             </div>
         )
     }

@@ -2,6 +2,8 @@
 
 import {addDoc, collection, deleteDoc, doc, getDoc, getDocs, updateDoc} from 'firebase/firestore';
 import firestore from '@/config/firebase.config';
+import useSWR from "swr";
+import {useRouter} from "next/navigation";
 
 export const getAllProjects = async () => {
     const querySnapshot = await getDocs(collection(firestore, 'projects'));
@@ -32,4 +34,16 @@ export const createProject = async (data: any) => {
 
 export const deleteProject = async (projectId: string) => {
     return await deleteDoc(doc(firestore, 'projects', projectId));
+}
+
+
+export function useProjects() {
+    const {data: projects, isLoading} = useSWR("projects", getAllProjects);
+    const {mutate} = useSWR("projects");
+
+    return {
+        projects,
+        mutate,
+        isLoading
+    }
 }

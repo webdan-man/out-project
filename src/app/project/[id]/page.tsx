@@ -1,8 +1,8 @@
 import ProjectEditPage from "@/components/common/ProjectEditPage";
-import {getProject} from "@/services/getProjects";
 import {Metadata} from "next";
 import {doc, getDoc} from "firebase/firestore";
 import firestore from "@/config/firebase.config";
+import {ProjectEditPageProps} from "@/types/ProjectTypes";
 
 
 export async function generateMetadata({params: {id}}: ProjectEditPageProps): Promise<Metadata> {
@@ -15,11 +15,7 @@ export async function generateMetadata({params: {id}}: ProjectEditPageProps): Pr
     }
 }
 
-export type ProjectEditPageProps = {
-    params: {
-        id: string;
-    }
-}
+
 export default function ProjectEdit({params}: ProjectEditPageProps) {
     return <ProjectEditPage params={params}/>;
 }

@@ -11,6 +11,8 @@ import {
 import {usePathname} from "next/navigation";
 import {useSession} from "next-auth/react";
 import Image from "next/image";
+import {useWindowSize} from 'react-use';
+import {apiRoutes} from "@/app/api/auth/[...nextauth]/route";
 
 const { Sider: AntdSider } = Layout;
 
@@ -19,28 +21,33 @@ export default function Sider() {
 
     const pathName = usePathname()
 
+    const {width} = useWindowSize();
+
     const items: MenuProps['items'] = [
         {
-            key: '/',
+            key: apiRoutes.DEFAULT,
             icon: <HomeOutlined/>,
-            label: <Link href="/">Home</Link>,
+            label: <Link href={apiRoutes.DEFAULT}>Home</Link>,
         },
         {
-            key: '/projects',
+            key: apiRoutes.PROJECTS,
             icon: <CloudOutlined/>,
-            label: <Link href="/projects">Projects</Link>,
+            label: <Link href={apiRoutes.PROJECTS}>Projects</Link>,
         },
         {
-            key: '/profile',
+            key: apiRoutes.PROFILE,
             icon: <UserOutlined/>,
-            label: <Link href="/profile">Profile</Link>,
+            label: <Link href={apiRoutes.PROFILE}>Profile</Link>,
         }
     ];
 
     const [collapsed, setCollapsed] = useState(false);
 
     return (
-        <AntdSider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}
+        <AntdSider
+            collapsible={width > 500}
+            collapsed={width <= 500 || collapsed}
+            onCollapse={(value) => setCollapsed(value)}
         >
             {(data?.user?.image && data?.user?.name)
                 ? <div className="flex mx-[24px] my-[16px]">

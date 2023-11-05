@@ -4,3 +4,10 @@ import {authConfig} from "@/config/auth";
 const handler = nextAuth(authConfig);
 
 export { handler as GET, handler as POST}
+
+export const apiRoutes = {
+    DEFAULT: '/',
+    PROJECT: '/project',
+    PROJECTS: '/projects',
+    PROFILE: '/profile',
+}
