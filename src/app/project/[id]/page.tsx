@@ -1,13 +1,17 @@
-'use client'
 import ProjectEditPage from "@/components/common/ProjectEditPage";
 import {getProject} from "@/services/getProjects";
 import {Metadata} from "next";
+import {doc, getDoc} from "firebase/firestore";
+import firestore from "@/config/firebase.config";
 
-async function generateMetadata({params: {id}}: ProjectEditPageProps): Promise<Metadata> {
-    const project = await getProject(id);
+
+export async function generateMetadata({params: {id}}: ProjectEditPageProps): Promise<Metadata> {
+    const docRef = doc(firestore, 'projects', id);
+    const docSnap = await getDoc(docRef);
+    const data = docSnap.data();
 
     return {
-        title: project?.title
+        title: data?.title
     }
 }
 
